@@ -1,19 +1,27 @@
 'use strict';
 
-app.controller('ItemNewCtrl', function($scope, ItemStorage) {
+app.controller('ItemNewCtrl', function($scope, ItemStorage, $location) {
 
-  $scope.newTask = {};
+  $scope.newTask = {
+    assignedTo: '',
+    dependencies: '',
+    dueDate: '',
+    task: '',
+    location: '',
+    urgency: '',
+    isCompleted: false
+  };
 
 
  //Function that pushes a new task to an array
  $scope.addNewItem = function() {
 
-   $scope.newTask.isCompleted = false;
-   $scope.newTask.id = ItemStorage.getItemList.length;
-   console.log('added new item', $scope.newTask);
-   ItemStorage.postNewItem($scope.newTask);
-   $scope.newTask = {};
- };
-
+  //  console.log('added new item', $scope.newTask);
+  ItemStorage.postNewItem($scope.newTask)
+  .then(function() {
+    //Sets the returned
+    $location.url("/items/list");
+    });
+  };
 
 });

@@ -1,50 +1,68 @@
 'use strict';
 
-app.factory('ItemStorage', function() {
+app.factory('ItemStorage', function(FirebaseUrl, $q, $http) {
 
-  let items = [
-    {
-     id: 0,
-     task: "mow the lawn",
-     isCompleted: true,
-     dueDate: "12/5/17",
-     assignedTo: "Greg",
-     location: "Greg's mom's house",
-     urgency: "low",
-     dependencies: "sunshine, clippers, hat, water, headphones"
-    },
-    {
-     id: 1,
-     task: "grade quizzes",
-     isCompleted: false,
-     dueDate: "12/5/15",
-     assignedTo: "Joe",
-     location: "NSS",
-     urgency: "high",
-     dependencies: "wifi, tissues, vodka"
-    },
-    {
-     id: 2,
-     task: "take a nap",
-     isCompleted: false,
-     dueDate: "5/21/16",
-     assignedTo: "Joe",
-     location: "Joe's house",
-     urgency: "medium",
-     dependencies: "hammock, cat, pillow, blanket"
-    }
-
-  ];//End $scope.items
 
   let getItemList = function() {
-    return items;
+    let items = [];
+    return $q(function( resolve, reject ) {
+
+        $http.get(`${FirebaseUrl}/items.json`)
+        .success(function(itemObj) {
+          let itemCollection = itemObj;
+          //Loops through each object key in the objColl. that is returned from http request and assigns it an 'itemKey' that is was defined in FB
+          Object.keys(itemCollection).forEach(function(key) {
+            itemCollection[key].id = key;
+            items.push(itemCollection[key]);
+          });
+          resolve(items);
+        })
+        .error(function(error){
+          reject(error);
+        });
+    });
+
+
   };
 
+
+  //Function posts a new object to FB
   let postNewItem = function(newItem) {
-    items.push(newItem);
+
+    return $q(function( resolve, reject) {
+
+      $http.post(`${FirebaseUrl}/items.json`,
+        JSON.stringify(newItem))
+      .success(function() {
+        resolve();
+      })
+      .error(function(error) {
+        reject(error);
+      });
+    });
+
   };
+
+
+  //Function that deletes item from DB
+  let deleteItem = function(itemKey) {
+
+    return $q(function( resolve, reject ) {
+
+      $http.delete(`${FirebaseUrl}/items/${itemKey}.json`)
+      .success(function(response) {
+        resolve(response);
+      })
+      .error(function(error) {
+        reject(error);
+      });
+
+    });
+
+  };
+
 
   //Need to export the object
-  return { getItemList, postNewItem };
+  return { getItemList, postNewItem, deleteItem };
 
 });

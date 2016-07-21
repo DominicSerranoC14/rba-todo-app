@@ -1,11 +1,18 @@
 "use strict";
 
 //Create a module for the app
-const app = angular.module("TodoApp", [ 'ngRoute' ]);
+const app = angular.module("TodoApp", [ 'ngRoute' ])
+.constant('FirebaseUrl', "https://mjd-fb-todo.firebaseio.com/");
 
 
 //Binds partial's to controller
-app.config(function($routeProvider) {
+app.config(function($routeProvider, FBCreds) {
+
+  let authConfig = {
+    apiKey: FBCreds.apiKey,
+    authDomain: FBCreds.authDomain
+  };
+  firebase.initializeApp(authConfig);
 
   $routeProvider.
   //'/items/list' is the url that the button links to
@@ -17,7 +24,7 @@ app.config(function($routeProvider) {
     templateUrl: 'partials/item-new.html',
     controller: 'ItemNewCtrl'
   }).
-  when( '/items/details', {
+  when( '/items/details/:itemId', {
     templateUrl: 'partials/item-details.html',
     controller: 'ItemViewCtrl'
   }).

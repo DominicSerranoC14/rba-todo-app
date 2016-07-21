@@ -1,7 +1,16 @@
 'use strict';
 
-app.controller('ItemViewCtrl', function($scope) {
+app.controller('ItemViewCtrl', function($scope, ItemStorage, $routeParams) {
 
-  $scope.message = 'This is an item.';
+  $scope.items = [];
+
+  ItemStorage.getItemList()
+  .then(function(itemCollection) {
+    $scope.items = itemCollection;
+
+    $scope.selectedItem = $scope.items.filter(function(item) {
+      return item.id === $routeParams.itemId;
+    })[0];
+  });
 
 });

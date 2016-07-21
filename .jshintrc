@@ -6,5 +6,5 @@
   "eqeqeq": true,
   "undef": true,
   "unused": true,
-  "globals": { "$": true, "app": true }
+  "globals": { "$": true, "app": true, "firebase": true }
 }
