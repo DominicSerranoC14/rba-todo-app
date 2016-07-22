@@ -32,6 +32,10 @@ app.config(function($routeProvider, FBCreds) {
     templateUrl: 'partials/user-signin.html',
     controller: 'LogInCtrl'
   }).
+  when( '/user/signout/', {
+    templateUrl: 'partials/user-signin.html',
+    controller: 'LogInCtrl'
+  }).
   when( '/items/details/:itemId', {
     templateUrl: 'partials/item-details.html',
     controller: 'ItemViewCtrl'

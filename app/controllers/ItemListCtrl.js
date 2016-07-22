@@ -1,15 +1,15 @@
 'use strict';
 
 //Pass a factory into a controller as a dependency ex. '$scope' is a dependency
-app.controller('ItemListCtrl', function($scope, ItemStorage) {
+app.controller('ItemListCtrl', function($rootScope, $scope, ItemStorage) {
 
-  ItemStorage.getItemList()
+
+  ItemStorage.getItemList($rootScope.user)
   .then(function(itemCollection) {
-    console.log('from pop', itemCollection);
     //Sets the returned
     $scope.items = itemCollection;
+    console.log("Test $scope.items", $scope.items);
   });
-
 
 
   //Function that deletes the item on the 'X' button clicked
@@ -17,9 +17,10 @@ app.controller('ItemListCtrl', function($scope, ItemStorage) {
 
     ItemStorage.deleteItem(itemId)
     .then(function() {
-      ItemStorage.getItemList()
-      .then(function(items) {
-        $scope.items = items;
+      ItemStorage.getItemList($rootScope.user)
+      .then(function(itemCollection) {
+        //Sets the returned
+        $scope.items = itemCollection;
       });
     });
   };

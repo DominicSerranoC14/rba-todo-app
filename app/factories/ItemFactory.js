@@ -15,6 +15,7 @@ app.factory('ItemStorage', function(FirebaseUrl, $q, $http) {
           Object.keys(itemCollection).forEach(function(key) {
             console.log("Test userId", userId);
             itemCollection[key].id = key;
+            // console.log("Test itemCollection[key]", itemCollection[key]);
             if ( userId === itemCollection[key].uid ) {
               items.push(itemCollection[key]);
             }

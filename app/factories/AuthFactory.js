@@ -1,7 +1,7 @@
 "use strict";
 
 
-app.factory('AuthFactory', function($location, ItemStorage) {
+app.factory('AuthFactory', function($location) {
 
   let currentUserId = null;
   let provider = new firebase.auth.GoogleAuthProvider();
@@ -11,13 +11,29 @@ app.factory('AuthFactory', function($location, ItemStorage) {
     if (user) {
       console.log("Test user.uid", user.uid);
       currentUserId = user.uid;
-      ItemStorage.getItemList(currentUserId);  
+      // ItemStorage.getItemList(currentUserId);
     } else {
       console.log("Not Logged in");
       $location.url('/user/signin/');
       //change view to login / register partial
     }
   });
+
+
+
+
+
+    // firebase.auth().getRedirectResult().then(function(result) {
+    //   console.log("Test result", result);
+    //   if (result.user) {
+    //     currentUserId = result.user.uid;
+    //   } else {
+    //     console.log("Not Logged in");
+    //     $location.url('/user/signin/');
+    //     //change view to login / register partial
+    //   }
+    // });
+
 
   let authWithProvider = function() {
     return firebase.auth().signInWithPopup(provider);

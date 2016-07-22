@@ -2,11 +2,10 @@
 
 
 //Simple controller that logs $scope
-app.controller('LogInCtrl', function($scope, $location, AuthFactory, ItemStorage) {
+app.controller('LogInCtrl', function($rootScope, $scope, $location, AuthFactory) {
 
-  console.log("Test $scope", $scope);
-  console.log("Test $location", $location);
-  console.log("Test AuthFactory", AuthFactory);
+$rootScope.user = AuthFactory.getUser();
+$scope.$watch($rootScope.user);
 
 
   //Register function
@@ -14,13 +13,8 @@ app.controller('LogInCtrl', function($scope, $location, AuthFactory, ItemStorage
 
     AuthFactory.authWithProvider()
       .then(function(result) {
-        let user = result.user.uid;
-        console.log("logged in user fer sure", user);
-        //Passes currentUserId into get item list and only returns items that have the currentUserId's uid
-        //load users item list
-        console.log("Test user", user);
-        ItemStorage.getItemList(user);
-        $location.path("/items/list");
+        $rootScope.user = result.user.uid;
+        $location.url("/items/list");
         $scope.$apply();
       }).catch(function(error) {
         // Handle Errors here.
@@ -35,10 +29,23 @@ app.controller('LogInCtrl', function($scope, $location, AuthFactory, ItemStorage
     };//End registerUser function
 
 
+    //Logout function
+    $scope.logoutUser = function() {
+
+      firebase.auth().signOut();
+      $location.url('/user/signin');
+      $rootScope.user = null;
+      console.log("User singed out");
+
+    };
+
 
     //Login function
 
-    //Logout function
+    if ( $location.path() === '/user/signout') {
+      $scope.logoutUser();
+    }
+
 
 
 });
