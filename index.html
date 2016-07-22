@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Todo Live</title>
+  <link rel="stylesheet" type="text/css" href="lib/bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+
+<body ng-app="TodoApp">
+
+  <!--  Allows you to pull partials into other partials  -->
+  <!--  Need to double wrap in quotes because ng-include is looking for a 'route' and not a url  -->
+  <div ng-include="'partials/navbar.html'"></div>
+
+  <div class="row">
+    <div class="col-xs-10 col-xs-offset-1 main-container">
+      <div class="col-xs-12" ng-view>
+        </div>
+    </div>
+  </div>
+
+
+  <!--  Third Paty Libs  -->
+  <script src="lib/bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="lib/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="lib/bower_components/angular/angular.min.js"></script>
+  <script src="lib/bower_components/angular-route/angular-route.min.js"></script>
+  <script src="lib/bower_components/firebase/firebase.js"></script>
+
+
+  <!--  Applications  -->
+  <script src="app/app.js"></script>
+
+  <!--  Factories  -->
+  <script src="app/values/FirebaseCreds.js"></script>
+  <script src="app/factories/ItemFactory.js"></script>
+  <script src="app/factories/AuthFactory.js"></script>
+
+  <!--  Controllers  -->
+  <script src="app/controllers/LogInCtrl.js"></script>
+  <script src="app/controllers/ItemListCtrl.js"></script>
+  <script src="app/controllers/ItemNewCtrl.js"></script>
+  <script src="app/controllers/ItemViewCtrl.js"></script>
+  <script src="app/controllers/NavCtrl.js"></script>
+  <script src="app/controllers/LogInCtrl.js"></script>
+
+</body>
+
+</html>
