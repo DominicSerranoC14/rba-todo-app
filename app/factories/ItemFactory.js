@@ -3,8 +3,9 @@
 app.factory('ItemStorage', function(FirebaseUrl, $q, $http) {
 
 
-  let getItemList = function() {
+  let getItemList = function(userId) {
     let items = [];
+
     return $q(function( resolve, reject ) {
 
         $http.get(`${FirebaseUrl}/items.json`)
@@ -12,8 +13,11 @@ app.factory('ItemStorage', function(FirebaseUrl, $q, $http) {
           let itemCollection = itemObj;
           //Loops through each object key in the objColl. that is returned from http request and assigns it an 'itemKey' that is was defined in FB
           Object.keys(itemCollection).forEach(function(key) {
+            console.log("Test userId", userId);
             itemCollection[key].id = key;
-            items.push(itemCollection[key]);
+            if ( userId === itemCollection[key].uid ) {
+              items.push(itemCollection[key]);
+            }
           });
           resolve(items);
         })
@@ -23,11 +27,17 @@ app.factory('ItemStorage', function(FirebaseUrl, $q, $http) {
     });
 
 
+
+
+
   };
 
 
   //Function posts a new object to FB
-  let postNewItem = function(newItem) {
+  let postNewItem = function(newItem, userId) {
+
+    //Set uid of current user when posting item to DB
+    newItem.uid = userId;
 
     return $q(function( resolve, reject) {
 

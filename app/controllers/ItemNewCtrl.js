@@ -1,6 +1,6 @@
 'use strict';
 
-app.controller('ItemNewCtrl', function($scope, ItemStorage, $location) {
+app.controller('ItemNewCtrl', function($scope, ItemStorage, $location, AuthFactory) {
 
   $scope.newTask = {
     assignedTo: '',
@@ -17,7 +17,7 @@ app.controller('ItemNewCtrl', function($scope, ItemStorage, $location) {
  $scope.addNewItem = function() {
 
   //  console.log('added new item', $scope.newTask);
-  ItemStorage.postNewItem($scope.newTask)
+  ItemStorage.postNewItem($scope.newTask, AuthFactory.getUser())
   .then(function() {
     //Sets the returned
     $location.url("/items/list");

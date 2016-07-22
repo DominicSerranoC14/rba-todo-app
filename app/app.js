@@ -14,6 +14,10 @@ app.config(function($routeProvider, FBCreds) {
   };
   firebase.initializeApp(authConfig);
 
+
+  //FB auth change listener goes here?
+
+
   $routeProvider.
   //'/items/list' is the url that the button links to
   when('/items/list', {
@@ -23,6 +27,10 @@ app.config(function($routeProvider, FBCreds) {
   when('/items/new', {
     templateUrl: 'partials/item-new.html',
     controller: 'ItemNewCtrl'
+  }).
+  when( '/user/signin/', {
+    templateUrl: 'partials/user-signin.html',
+    controller: 'LogInCtrl'
   }).
   when( '/items/details/:itemId', {
     templateUrl: 'partials/item-details.html',
